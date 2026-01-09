@@ -39,7 +39,7 @@ func (rc *RootCmd) ExecuteContext(ctx context.Context) error {
 	return rc.cmd.ExecuteContext(ctx)
 }
 
-// <NAME> initialize the workflow to build the project body.
+// BuildProject initialize the workflow to build the project body.
 //
 // When called it will make some questions to the user and should build the whole project from it, so it's basically a bunch of
 // of edge cases...
@@ -55,19 +55,23 @@ func (rc *RootCmd) BuildProject() *cobra.Command {
 					return
 				}
 
-				// Manager the database
-				if err := databaseFlow(); err != nil {
+				// Manages brokers
+				if err := messageBrokerFlow(); err != nil {
 					log.Fatalln("[ERROR] ", err)
 					return
 				}
 
-				// >> Do you want a message broker on your docker-compose? (y/n)
-				// >>>> Select the message broker:
-				// >>>> [1]
-				// >>>> [2]
-
+				// Manages databases
+				if err := databaseFlow(); err != nil {
+					log.Fatalln("[ERROR] ", err)
+					return
+				}
 			}
 			// Create the go mod
+			if err := createGoMod(); err != nil {
+				log.Fatalln("[ERROR] ", err)
+				return
+			}
 		},
 	}
 }
