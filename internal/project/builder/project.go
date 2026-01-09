@@ -1,12 +1,13 @@
 package builder
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/rafaeldepontes/goinit/internal/log"
+	"github.com/rafaeldepontes/goinit/internal/project/builder/templates"
 	"github.com/spf13/cobra"
 )
 
@@ -38,6 +39,7 @@ func NewRootCmd() *RootCmd {
 
 // Execute uses the args (os.Args[1:] by default) and run through the command tree finding appropriate matches for commands and then corresponding flags. (I got this description from cobra function...)
 func (rc *RootCmd) Execute() error {
+	rc.Log.Infoln(templates.ProjectBanner)
 	return rc.cmd.Execute()
 }
 
@@ -60,16 +62,22 @@ func (rc *RootCmd) BuildProject() *cobra.Command {
 		Short: "Build the project based on some questions",
 		Run: func(cmd *cobra.Command, args []string) {
 			// Create the go mod
-			projectName, err := createGoMod(rc.Log)
-			if err != nil {
-				rc.Log.Errorln("[ERROR] didn't create the go.mod: " + err.Error())
+			scanner := bufio.NewScanner(os.Stdin)
+			rc.Log.Info("Project name: ")
+
+			var projectName string
+			if scanner.Scan() {
+				projectName = scanner.Text()
+			}
+			rc.projectName = projectName
+
+			if err := os.Mkdir(rc.projectName, OwnerPropertyMode); err != nil {
+				rc.Log.Errorln("[ERROR] didn't create the dir: " + err.Error())
 				return
 			}
 
-			rc.projectName = projectName
-
-			if err := createDir(projectName); err != nil {
-				rc.Log.Errorln("[ERROR] didn't create the dir: " + err.Error())
+			if err := createGoMod(rc.projectName, rc.Log); err != nil {
+				rc.Log.Errorln("[ERROR] didn't create the go.mod: " + err.Error())
 				return
 			}
 
@@ -81,24 +89,17 @@ func (rc *RootCmd) BuildProject() *cobra.Command {
 				}
 
 				// Manages brokers
-				if err := messageBrokerFlow(projectName, rc.Log); err != nil {
+				if err := messageBrokerFlow(rc.projectName, rc.Log); err != nil {
 					rc.Log.Errorln("[ERROR] didn't create the message broker: " + err.Error())
 					return
 				}
 
 				// Manages databases
-				if err := databaseFlow(projectName, rc.Log); err != nil {
+				if err := databaseFlow(rc.projectName, rc.Log); err != nil {
 					rc.Log.Errorln("[ERROR] didn't create the database: " + err.Error())
 					return
 				}
 			}
 		},
 	}
-}
-
-func createDir(name string) error {
-	if err := os.Mkdir(name, OwnerPropertyMode); err != nil {
-		return err
-	}
-	return os.Rename("go.mod", filepath.Join(name, "go.mod"))
 }

@@ -14,7 +14,7 @@ const (
 	GoModFile = "go.mod"
 )
 
-func createGoMod(log *log.Logger) (string, error) {
+func createGoMod(name string, log *log.Logger) error {
 	template := templates.GodModDefault
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -24,13 +24,8 @@ func createGoMod(log *log.Logger) (string, error) {
 		gitUsername = scanner.Text()
 	}
 
-	var projectName string
 	if gitUsername != "" {
-		log.Info("Project name: ")
-		if scanner.Scan() {
-			projectName = scanner.Text()
-			template = fmt.Sprintf(templates.GoMod, gitUsername, projectName)
-		}
+		template = fmt.Sprintf(templates.GoMod, gitUsername, name)
 	}
 
 	if err := os.WriteFile(
@@ -38,7 +33,8 @@ func createGoMod(log *log.Logger) (string, error) {
 		[]byte(template),
 		OwnerPropertyMode,
 	); err != nil {
-		return "", err
+		return err
 	}
-	return projectName, nil
+
+	return os.Rename(GoModFile, fmt.Sprintf("%s/%s", name, GoModFile))
 }
