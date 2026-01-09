@@ -15,12 +15,14 @@ var databaseOptions = map[int]string{
 	1: "PostgreSQL",
 	2: "MySQL",
 	3: "SQL Server",
+	4: "MongoDB",
 }
 
 const (
 	Postgres  = "1"
 	MySql     = "2"
 	SqlServer = "3"
+	Mongo     = "4"
 )
 
 // DockerFlow handles the logic behind the docker-compose and the dockerfile, it appears only once at the start.
@@ -31,6 +33,7 @@ func databaseFlow() error {
 		for i := 0; i < len(databaseOptions); i++ {
 			fmt.Printf(">>>> [%d] %s\n", i+1, databaseOptions[i+1])
 		}
+
 		if scanner.Scan() {
 			switch strings.TrimSpace(scanner.Text()) {
 			case Postgres:
@@ -45,6 +48,11 @@ func databaseFlow() error {
 
 			case SqlServer:
 				if err := createCompose(templates.SQLServerCompose); err != nil {
+					return err
+				}
+
+			case Mongo:
+				if err := createCompose(templates.MongoCompose); err != nil {
 					return err
 				}
 
