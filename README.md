@@ -20,23 +20,25 @@ It removes repetitive boilerplate so you can focus on writing actual business lo
 
 ---
 
-## Installation
-
-### Download the executable:
-
-Make sure `$PATH/bin` is in your `$PATH`.
-
----
-
-## Usage
-
-Initialize a new Go project:
+## How to use:
 
 ```bash
 gini build
 ```
 
-This will create a new directory with the predefined structure and configuration.
+**This will create a new directory with the predefined structure and configuration.**
+
+## Installation
+
+## Go Install
+
+```bash
+go install github.com/rafaeldepontes/goinit@latest
+```
+
+> This installs a go binary that will automatically bind to your $GOPATH, so don't worry much...
+
+Make sure `$GOPATH/bin` is in your `$PATH`.
 
 ---
 
@@ -68,6 +70,7 @@ Go Init provides a consistent starting point, helping you:
 ## Contributing
 
 Contributions are welcome.
+
 Feel free to open issues or submit pull requests.
 
 ---
