@@ -41,7 +41,7 @@ func NewRootCmd() *RootCmd {
 
 // Execute uses the args (os.Args[1:] by default) and run through the command tree finding appropriate matches for commands and then corresponding flags. (I got this description from cobra function...)
 func (rc *RootCmd) Execute() error {
-	rc.Log.Infoln(templates.ProjectBanner)
+	rc.Log.PrintBanner(templates.ProjectBanner)
 	return rc.cmd.Execute()
 }
 

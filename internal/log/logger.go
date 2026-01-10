@@ -7,6 +7,7 @@ const (
 	ColorError   = "\u001b[38;5;203m"
 	ColorArrow   = "\u001b[38;5;39m"
 	ColorWarning = "\u001b[38;5;11m"
+	ColorBanner  = "\u001b[38;5;218m"
 	ColorNone    = "\033[0m"
 )
 
@@ -63,4 +64,8 @@ func (l *Logger) Errorln(msg string) {
 
 func (l *Logger) Errorf(msg string, args ...any) {
 	fmt.Printf(ColorError+msg+ColorNone, args...)
+}
+
+func (l *Logger) PrintBanner(msg string) {
+	fmt.Println(ColorBanner + msg + ColorNone)
 }
