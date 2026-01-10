@@ -12,19 +12,19 @@ It removes repetitive boilerplate so you can focus on writing actual business lo
 - Ready-to-use configuration and defaults
 - Fast project scaffolding
 - Minimal setup, zero friction
-- Designed for real-world Go applications
+- Designed for small project/MVP Go applications
+
+---
+
+<img src="public/Gini.png">
 
 ---
 
 ## Installation
 
-### Using Go (recommended)
+### Download the executable:
 
-```bash
-go install github.com/rafaeldepontes/goinit@latest
-```
-
-Make sure `$GOPATH/bin` is in your `$PATH`.
+Make sure `$PATH/bin` is in your `$PATH`.
 
 ---
 
@@ -33,7 +33,7 @@ Make sure `$GOPATH/bin` is in your `$PATH`.
 Initialize a new Go project:
 
 ```bash
-ginit build
+gini build
 ```
 
 This will create a new directory with the predefined structure and configuration.
