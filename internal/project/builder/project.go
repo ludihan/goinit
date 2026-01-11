@@ -32,7 +32,10 @@ func NewRootCmd() *RootCmd {
 		Log: log.NewLogger(),
 	}
 
-	cmd := &cobra.Command{}
+	cmd := &cobra.Command{
+		Use:   "gini",
+		Short: "Initialize Go projects",
+	}
 	cmd.AddCommand(rc.BuildProject())
 
 	rc.cmd = cmd

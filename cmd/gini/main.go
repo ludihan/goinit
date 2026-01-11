@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"os"
 	"os/signal"
 	"syscall"
 
@@ -19,24 +20,10 @@ func main() {
 	rootCmd := builder.NewRootCmd()
 	rootCmd.SetContext(ctx)
 
-	done := make(chan error, 1)
-
-	go func() {
-		done <- rootCmd.Execute()
-	}()
-
-	select {
-	case err := <-done:
-		if err != nil {
-			rootCmd.Log.Errorln("\n[ERROR] command failed: " + err.Error())
-			revert(rootCmd)
-		}
-		return
-
-	case <-ctx.Done():
-		rootCmd.Log.Warningln("\nCommand interrupted — reverting changes...")
+	if err := rootCmd.Execute(); err != nil {
+		rootCmd.Log.Errorln("\n[ERROR] command failed: " + err.Error())
 		revert(rootCmd)
-		return
+		os.Exit(1)
 	}
 }
 
