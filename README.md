@@ -32,7 +32,7 @@ gini build
 ## Go Install
 
 ```bash
-go install github.com/rafaeldepontes/goinit@latest
+go install github.com/rafaeldepontes/goinit/cmd/gini@latest
 ```
 
 > This installs a go binary that will automatically bind to your $GOPATH, so don't worry much...
