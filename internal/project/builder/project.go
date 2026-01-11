@@ -64,11 +64,11 @@ func (rc *RootCmd) RevertChanges() error {
 
 // BuildProject initialize the workflow to build the project body.
 //
-// When called it will make some questions to the user and should build the whole project from it, so it's basically a bunch of
-// of edge cases...
+// When called it will make some questions to the user and should build the whole
+// project from it, so it's basically a bunch of edge cases...
 func (rc *RootCmd) BuildProject() *cobra.Command {
 	return &cobra.Command{
-		Use:   "asljdfdhas",
+		Use:   "build",
 		Short: "Build the project based on some questions",
 		Long:  LongDescription,
 		RunE: func(cmd *cobra.Command, args []string) error {
