@@ -73,7 +73,10 @@ func (rc *RootCmd) SetContext(ctx context.Context) {
 
 // RevertChanges delete the project's directory
 func (rc *RootCmd) RevertChanges() error {
-	return os.RemoveAll(fmt.Sprintf("./%s", rc.projectName))
+	if rc.projectName != "" {
+		return os.RemoveAll(fmt.Sprintf("./%s", rc.projectName))
+	}
+	return nil
 }
 
 // BuildProject initialize the workflow to build the project body.
