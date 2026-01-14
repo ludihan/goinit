@@ -15,6 +15,7 @@ var LongDescription string = `Build the project and put it into a new directory,
 
 const (
 	OwnerPropertyMode = 0644
+	DefaultDirectoryMode = 0755
 )
 
 type docker struct {

@@ -15,7 +15,7 @@ const (
 )
 
 func createGoMod(name string, log *log.Logger) error {
-	if err := os.Mkdir(name, OwnerPropertyMode); err != nil {
+	if err := os.Mkdir(name, DefaultDirectoryMode); err != nil {
 		return err
 	}
 
